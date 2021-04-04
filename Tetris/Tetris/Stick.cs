@@ -9,37 +9,38 @@ namespace Tetris
         
         public Stick(int x, int y, char sym)
         {
-            points[0] = new Point(x, y, sym);
-            points[1] = new Point(x, y + 1, sym);
-            points[2] = new Point(x, y + 2, sym);
-            points[3] = new Point(x, y + 3, sym);
+            Points[0] = new Point(x, y, sym);
+            Points[1] = new Point(x, y + 1, sym);
+            Points[2] = new Point(x, y + 2, sym);
+            Points[3] = new Point(x, y + 3, sym);
+            Draw();
         }
 
-        public override void Rotate()
+        public override void Rotate(Point[] pList)
         {
-            if (points[0].x == points[1].x)
+            if (pList[0].X == pList[1].X)
             {
-                RotateHorisontal();
+                RotateHorisontal(pList);
             }
             else
-                RotateVertical();
+                RotateVertical(pList);
         }
 
-        private void RotateVertical()
+        private void RotateVertical(Point[] pList)
         {
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < pList.Length; i++)
             {
-                points[i].x = points[0].x;
-                points[i].y = points[0].y + i;
+                pList[i].X = pList[0].X;
+                pList[i].Y = pList[0].Y + i;
             }
         }
 
-        private void RotateHorisontal()
+        private void RotateHorisontal(Point[] pList)
         {
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < pList.Length; i++)
             {
-                points[i].y = points[0].y;
-                points[i].x = points[0].x + i;
+                pList[i].Y = pList[0].Y;
+                pList[i].X = pList[0].X + i;
             }
         }
     }

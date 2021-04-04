@@ -7,80 +7,43 @@ namespace Tetris
     {
         static void Main(string[] args)
         {
-            Console.SetWindowSize(40, 30);
-            Console.SetBufferSize(40, 30);
+            Console.SetWindowSize(Field.Width, Field.Height);
+            Console.SetBufferSize(Field.Width, Field.Height);
+
+            Field.Width = 40;
+            Field.Height = 30;
 
             FigureGenerator generator = new FigureGenerator(20, 0, '*');
-            Figure s;
+            Figure currentFigure = generator.GetNewFigure();
 
             while (true)
             {
-                FigureFall(out s, generator);
-                s.Draw();
-            }
-
-            static void FigureFall(out Figure fig, FigureGenerator generator)
-            {
-                fig = generator.GetNewFigure();
-                fig.Draw();
-
-                for (int i = 0; i < 15; i++)
+                if (Console.KeyAvailable)
                 {
-                    fig.Hide();
-                    fig.Move(Direction.DOWN);
-                    fig.Draw();
-                    Thread.Sleep(200);
+                    var key = Console.ReadKey();
+                    HandleKey(currentFigure, key);
                 }
             }
+         
+        }
 
-            /*s.Draw();
-
-            Thread.Sleep(500);
-            s.Hide();
-            s.Rotate();
-            s.Draw();
-
-            Thread.Sleep(500);
-            s.Hide();
-            s.Move(Direction.LEFT);
-            s.Draw();
-
-            Thread.Sleep(500);
-            s.Hide();
-            s.Move(Direction.DOWN);
-            s.Draw();
-
-            Thread.Sleep(500);
-            s.Hide();
-            s.Move(Direction.DOWN);
-            s.Draw();
-
-            Thread.Sleep(500);
-            s.Hide();
-            s.Move(Direction.RIGHT);
-            s.Draw();
-
-            Thread.Sleep(500);
-            s.Hide();
-            s.Rotate();
-            s.Draw();
-
-            //Stick t = new Stick(4, 7, '*');
-            //t.Draw();
-
-            //Point p1 = new Point(2, 3, '*');
-            //p1.Draw();
-
-            /*Point p2 = new Point()
+        private static void HandleKey(Figure currentFigure, ConsoleKeyInfo key)
+        {
+            switch (key.Key)
             {
-                x = 4,
-                y = 5,
-                c = '#'
-            };
-
-            p2.Draw();*/
-
-            Console.ReadLine();
+                case ConsoleKey.LeftArrow:
+                    currentFigure.TryMove(Direction.LEFT);
+                    break;
+                case ConsoleKey.RightArrow:
+                    currentFigure.TryMove(Direction.RIGHT);
+                    break;
+                case ConsoleKey.DownArrow:
+                    currentFigure.TryMove(Direction.DOWN);
+                    break;
+                case ConsoleKey.Spacebar:
+                    currentFigure.TryRotate();
+                    break;
+            }
         }
     }
 }
